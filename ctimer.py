@@ -1,7 +1,7 @@
 
 from PyQt5.QtWidgets import (QMainWindow, QLCDNumber, QWidget, QApplication, QVBoxLayout, QHBoxLayout,
                              QDateEdit, QPushButton, QDialog, QDialogButtonBox)
-from PyQt5.QtCore import QTimer, Qt, QDateTime
+from PyQt5.QtCore import QTimer, QDateTime
 from PyQt5.QtGui import QIcon
 from dateutil.relativedelta import relativedelta
 import datetime as pydt
@@ -36,7 +36,7 @@ class InitTimeDialog(QDialog):
         layout.addWidget(self.datetime)
         layout.addWidget(button)
         self.setWindowTitle('Start Date')
-        self.setWindowIcon(QIcon('triangle.png'))
+        self.setWindowIcon(QIcon('icon.png'))
 
     def get_datetime(self):
         return self.datetime.dateTime()
@@ -59,6 +59,7 @@ class MainWindow(QMainWindow):
         self.time_dialog = InitTimeDialog()
         self.setWindowTitle('CTimer')
         self.timestamp = self.load_time()
+        self.update_time()
 
         button_layout = QHBoxLayout()
         button_layout.addStretch(1)
@@ -70,6 +71,8 @@ class MainWindow(QMainWindow):
         main_widget.setLayout(main_layout)
 
         self.setCentralWidget(main_widget)
+        # help pyinstaller find icon file
+
         self.setWindowIcon(QIcon('icon.png'))
         self.setFixedSize(self.sizeHint())
 
@@ -83,16 +86,14 @@ class MainWindow(QMainWindow):
         elapsed = relativedelta(current_time, self.timestamp)
         years, days, hours, minutes, seconds = elapsed.years, elapsed.days, elapsed.hours, elapsed.minutes, \
                                                elapsed.seconds
-
-        time_string = '{0:02d}'.format(hours)
-        time_string += ':{0:02d}'.format(minutes)
-        time_string += ':{0:02d}'.format(seconds)
-
-        if days > 0:
-            time_string = '{} d '.format(days) + time_string
-
+        time_string = ''
         if years > 0:
             time_string = '{} y '.format(years) + time_string
+        if days > 0:
+            time_string = '{} d '.format(days) + time_string
+        time_string += '{0:02d}'.format(hours)
+        time_string += ':{0:02d}'.format(minutes)
+        time_string += ':{0:02d}'.format(seconds)
 
         return time_string
 
