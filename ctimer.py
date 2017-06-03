@@ -90,7 +90,7 @@ class MainWindow(QMainWindow):
         if years > 0:
             time_string = '{} y '.format(years) + time_string
         if days > 0:
-            time_string = '{} d '.format(days) + time_string
+            time_string = time_string + '{} d '.format(days)
         time_string += '{0:02d}'.format(hours)
         time_string += ':{0:02d}'.format(minutes)
         time_string += ':{0:02d}'.format(seconds)
